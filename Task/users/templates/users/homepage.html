@@ -1,0 +1,19 @@
+{% extends "todo/base.html"%}
+{% block content %}
+<body>
+<h1>Welcome to our web page!</h1>
+<h2>Sign In or Register to continue!</h2>
+<br>
+<form action="/login">
+    <button type="submit">Log In</button>
+</form>
+<br>
+<form action="/create">
+    <button type="submit">Create</button>
+</form>
+<br>
+<form action="/logout">
+    <button type="submit">Log Out</button>
+</form>
+</body>
+{% endblock content %}
