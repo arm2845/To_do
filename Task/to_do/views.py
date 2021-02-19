@@ -18,8 +18,18 @@ def newtask(request):
     return render(request, "to_do/new_task.html", {'form': form})
 
 
-def taskupdate(request):
-    return render(request, "to_do/task_update.html")
+def taskupdate(request, pk):
+    data = get_object_or_404(Task, pk=pk)
+    if request.method == 'POST':
+        form = CreateTaskForm(request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'The task was updated  successfully!')
+            return redirect('Home')
+    else:
+        form = CreateTaskForm(instance=data)
+        context = {'form': form}
+        return render(request, "to_do/task_update.html", context)
 
 
 def taskview(request, pk):

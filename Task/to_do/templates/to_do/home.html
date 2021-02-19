@@ -5,7 +5,7 @@
 <!-- here is set up the task -->
 		{% for task in tasks %}
 		<div class="item-row">
-			<a class="btn btn-sm btn-info" href="{% url 'TaskUpdate' %}">Update</a>
+			<a class="btn btn-sm btn-info" href="{% url 'TaskUpdate' task.id %}">Update</a>
 			<a class="btn btn-sm btn-danger" href="{% url 'TaskDelete' task.id %}">Delete</a>
 			<!-- this a tag is for task special view -->
 			<a href="{% url 'TaskView' task.id %}">
