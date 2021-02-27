@@ -18,3 +18,4 @@ class Task(models.Model):
 
     def __str__(self):
         return f'{self.name} - {STATUS_CHOICES[self.status][1]}'
+

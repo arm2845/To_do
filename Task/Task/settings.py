@@ -124,6 +124,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIR = [('to_do', os.path.join(BASE_DIR, 'to_do/static'))]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
 LOGIN_REDIRECT_URL = 'Home'
 LOGIN_URL = 'LogIn'
 LOGOUT_REDIRECT_URL = 'LogIn'
