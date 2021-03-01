@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 @login_required()
@@ -54,17 +56,33 @@ def taskupdate(request, pk):
         return render(request, "to_do/task_update.html", {'form': form})
 
 
-@login_required()
-def taskview(request, pk):
-    special_task = get_object_or_404(Task, pk=pk, user=request.user.id)
-    return render(request, "to_do/task_view.html", {'task': special_task})
+# @login_required()
+# def taskview(request, pk):
+#     special_task = get_object_or_404(Task, pk=pk, user=request.user.id)
+#     return render(request, "to_do/task_view.html", {'task': special_task})
 
 
-@login_required()
-def home(request):
-    tasks = Task.objects.all().filter(user=request.user.id)
-    context = {'tasks': tasks}
-    return render(request, "to_do/home.html", context)
+# @login_required()
+# def home(request):
+#     tasks = Task.objects.all().filter(user=request.user.id)
+#     context = {'tasks': tasks}
+#     return render(request, "to_do/home.html", context)
+
+
+class HomeView(LoginRequiredMixin, ListView):
+    model = Task
+    def get_queryset(self):
+        return self.model.objects.all().filter(user=self.request.user)
+
+
+class TaskView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = "to_do/task_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data'] = "Hello world"
+        return context
 
 
 @login_required()

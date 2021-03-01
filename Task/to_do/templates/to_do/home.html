@@ -3,7 +3,7 @@
 	<div class="todo-list">
 	<h3>Tasks</h3>
 <!-- here is set up the task -->
-		{% for task in tasks %}
+		{% for task in object_list %}
 		<div class="item-row">
 			<a class="btn btn-sm btn-info" href="{% url 'TaskUpdate' task.id %}">Update</a>
 			<a class="btn btn-sm btn-danger" href="{% url 'TaskDelete' task.id %}">Delete</a>

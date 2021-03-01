@@ -7,6 +7,8 @@ STATUS_CHOICES = (
     (1, 'Doing'),
     (2, 'Done'),
 )
+
+
 class Task(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

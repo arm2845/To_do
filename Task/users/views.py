@@ -1,15 +1,37 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .forms import UserRegistrationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import UserRegistrationForm, ProfileForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from django.contrib import messages
 
 
 @login_required
 def profile_page(request):
-    profile = Profile.objects.get(id=request.user.id)
+    profile = Profile.objects.get(user=request.user.id)
     return render(request, "users/profile.html", {'profile': profile})
+
+
+@login_required
+def profile_update(request):
+    id_ = request.user.id
+    user_profile = get_object_or_404(Profile, user=id_)
+    form = ProfileForm(instance=user_profile)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            form.save()
+
+            if request.FILES.get('image', None) != None:
+                print(request.FILES)
+                user_profile.image = request.FILES['image']
+                user_profile.save()
+                messages.success(request, 'Profile was updated successfully!')
+            return redirect('ProfilePage')
+
+    messages.warning(request,'Profile was not updated successfully!' )
+    return render(request, "users/profile_update.html", {'form': form})
 
 
 def create(request):
@@ -28,3 +50,4 @@ def create(request):
                 login(request, user)
             return redirect('ProfilePage')
     return render(request, 'users/create.html', {'form': form})
+
